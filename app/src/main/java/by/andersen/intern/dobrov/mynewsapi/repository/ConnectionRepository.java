@@ -50,11 +50,13 @@ public class ConnectionRepository implements ConnectionRepositoryInterface {
         apiInterface = apiFactory.getApiInterface();
     }
 
+    @Override
     public void connectionWithNewsListPresenter(List<Article> articles) {
         newsListPresenterInterface.addDate(articles);
         newsListPresenterInterface.setData(articles);
     }
 
+    @Override
     public void makeRequestCall(@NonNull String keyword) {
 
         String language = RequestParameters.getLanguage();
@@ -82,18 +84,7 @@ public class ConnectionRepository implements ConnectionRepositoryInterface {
         });
     }
 
-    public void setApiFactory(ApiFactory apiFactory) {
-        this.apiFactory = apiFactory;
-    }
-
-    public void setApiInterface(ApiInterface apiInterface) {
-        this.apiInterface = apiInterface;
-    }
-
-    public void setCall(Call<News> call) {
-        this.call = call;
-    }
-
+    @Override
     public List<Article> getArticles() {
         return articles;
     }

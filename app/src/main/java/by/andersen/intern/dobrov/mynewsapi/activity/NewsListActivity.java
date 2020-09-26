@@ -87,7 +87,6 @@ public class NewsListActivity extends MvpAppCompatActivity implements SwipeRefre
     public void showError() {
         Log.d(TAG, "showError: SENT ERROR MESSAGE ABOUT CONNECTION  NETWORK");
         Toast.makeText(NewsListActivity.this, NETWORK_ERROR, Toast.LENGTH_SHORT).show();
-        System.out.println("123");
 
     }
 
