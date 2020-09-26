@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="news">News</string>
+    <string name="description">Description</string>
+    <string name="title">Title</string>
+    <string name="source">Source</string>
+    <string name="date">Date</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="title_news">Title of News</string>
+    <string name="glide">Glide</string>
+    <string name="picasso">Picasso</string>
+    <string name="transition_image">transitionImage</string>
+</resources>
