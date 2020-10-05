@@ -12,7 +12,9 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+
 import com.squareup.picasso.Picasso;
+
 
 import by.andersen.intern.dobrov.mynewsapi.models.Article;
 import by.andersen.intern.dobrov.mynewsapi.R;
@@ -26,7 +28,9 @@ public class DetailActivity extends AppCompatActivity {
     private TextView description;
     private Toolbar toolbar;
     private ImageView glideImageView;
+
     private ImageView picassoImageView;
+
 
 
     @Override
@@ -44,6 +48,7 @@ public class DetailActivity extends AppCompatActivity {
         description = findViewById(R.id.desc);
 
         glideImageView = findViewById(R.id.glide_image);
+
         picassoImageView = findViewById(R.id.picasso_image);
 
         getNewsInformation();
@@ -65,7 +70,9 @@ public class DetailActivity extends AppCompatActivity {
         description.setText(article.getDescription());
 
         RequestOptions requestOptions = new RequestOptions();
+
         requestOptions.placeholder(R.drawable.ic_android_black_24dp);
+
 
         Glide
                 .with(this)
@@ -73,10 +80,12 @@ public class DetailActivity extends AppCompatActivity {
                 .apply(requestOptions)
                 .into(glideImageView);
 
+
         Picasso
                 .with(this)
                 .load(article.getUrlToImage())
                 .placeholder(R.drawable.ic_android_black_24dp)
                 .into(picassoImageView);
+
     }
 }

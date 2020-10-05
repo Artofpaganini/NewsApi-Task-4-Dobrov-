@@ -1,7 +1,12 @@
 package by.andersen.intern.dobrov.mynewsapi.activity;
 
+
+import android.support.annotation.NonNull;
+
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
+
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -74,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
+        recyclerView.setHasFixedSize(true);
+
+
+
         getCategoryFromSpinner();
 
     }
@@ -96,11 +105,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     articles = response.body().getArticle();
+
                     myAdapter = new MyAdapter(articles);
                     recyclerView.setAdapter(myAdapter);
                     myAdapter.notifyDataSetChanged();
 
                     initListener();
+
 
                     swipeRefreshLayout.setRefreshing(false);
 
@@ -119,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
+
     //инициализация  новости  по клику  на новость в РВ
     private void initListener() {
 
@@ -136,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
     }
+
 
     @Override
     public void onRefresh() {

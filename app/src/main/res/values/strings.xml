@@ -11,7 +11,12 @@
     <string name="title_news">Title of News</string>
     <string name="glide">Glide</string>
     <string name="picasso">Picasso</string>
-
+    <string name="selected_elementRV">SelectedElement</string>
+    <string name="transition_title">transitionTitle</string>
+    <string name="transition_image">transitionImage</string>
+    <string name="transition_publish_at">transitionPublishAt</string>
+    <string name="transition_author">transitionAuthor</string>
+    <string name="transition_source">transitionSource</string>
     <string-array name="news_category">
         <item>All</item>
         <item>Health</item>
