@@ -19,12 +19,22 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import by.andersen.intern.dobrov.mynewsapi.R;
+
 import by.andersen.intern.dobrov.mynewsapi.activity.DetailActivity;
+
 import by.andersen.intern.dobrov.mynewsapi.models.RequestParameters;
 import by.andersen.intern.dobrov.mynewsapi.models.Article;
 
@@ -38,6 +48,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public static final String TRANSITION_IMAGE = "transitionImage";
 
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+
+    private List<Article> articles;
+    private OnItemClickListener onItemClickListener;
+
     public MyAdapter(List<Article> articles) {
         this.articles = articles;
 
@@ -47,9 +62,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+
         return new MyViewHolder(view);
     }
 
+
+
+        return new MyViewHolder(view, onItemClickListener);
+    }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
@@ -64,10 +84,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
 
-
-
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView title;
         private TextView author;
@@ -82,10 +109,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
             super(itemView);
 
+        private Article article;
+
+        private OnItemClickListener onItemClickListener;
+
+        private MyViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+
+            super(itemView);
+
+            itemView.setOnClickListener(this);
             title = itemView.findViewById(R.id.title);
             author = itemView.findViewById(R.id.author);
             publishedAt = itemView.findViewById(R.id.publishedAt);
             source = itemView.findViewById(R.id.source);
+
             imageView = itemView.findViewById(R.id.element_image_view);
 
             itemView.setOnClickListener(view -> {
@@ -108,6 +145,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     itemView.getContext().startActivity(intent);
                 }
             });
+
+            this.onItemClickListener = onItemClickListener;
+
 
         }
 
@@ -132,4 +172,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     }
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onItemClick(v, getAdapterPosition());
+        }
+    }
 }

@@ -65,7 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,6 +125,116 @@
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.CardView>
+      
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/card_corner_Radius"
+                app:cardElevation="@dimen/cardview_default_elevation">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:paddingLeft="@dimen/padding"
+                    android:paddingRight="@dimen/padding">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/title_detail_news"
+                        android:layout_marginBottom="@dimen/title_detail_news"
+                        android:text="@string/title_news"
+                        android:textColor="@color/colorTextTitle"
+                        android:textSize="@dimen/item_title_text_size"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/desc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/desc"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.476" />
+
+                    <TextView
+                        android:id="@+id/desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/title"
+                        android:layout_marginBottom="@dimen/layout_marginBottom"
+                        android:text="@string/description"
+                        app:layout_constraintBottom_toTopOf="@+id/glide_text_view"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/glide_text_view" />
+
+                    <TextView
+                        android:id="@+id/glide_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/desc"
+                        android:layout_alignBottom="@+id/desc"
+                        android:layout_marginBottom="@dimen/text_view_marginBottom"
+                        android:text="@string/glide"
+                        android:textSize="@dimen/image_text_size"
+                        app:layout_constraintBottom_toTopOf="@+id/glide_image"
+                        app:layout_constraintEnd_toEndOf="@+id/glide_image"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/glide_image" />
+
+                    <ImageView
+                        android:id="@+id/glide_image"
+                        android:layout_width="@dimen/image_width"
+                        android:layout_height="@dimen/image_height"
+                        android:layout_alignTop="@+id/glide_text_view"
+                        android:layout_alignBottom="@+id/glide_text_view"
+                        android:layout_marginBottom="@dimen/marginBottom_glide"
+                        android:src="@drawable/ic_android_black_24dp"
+                        app:layout_constraintBottom_toTopOf="@+id/picasso_image"
+                        app:layout_constraintEnd_toEndOf="@+id/picasso_image"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/picasso_image" />
+
+                    <TextView
+                        android:id="@+id/picasso_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/desc"
+                        android:layout_alignBottom="@+id/glide_text_view"
+                        android:text="@string/picasso"
+                        android:textSize="@dimen/image_text_size"
+                        app:layout_constraintBottom_toTopOf="@+id/picasso_image"
+                        app:layout_constraintEnd_toEndOf="@+id/picasso_image"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/picasso_image"
+                        app:layout_constraintTop_toBottomOf="@+id/glide_image"
+                        app:layout_constraintVertical_bias="0.486" />
+
+                    <ImageView
+                        android:id="@+id/picasso_image"
+                        android:layout_width="@dimen/image_width"
+                        android:layout_height="@dimen/image_height"
+                        android:layout_alignTop="@+id/picasso_text_view"
+                        android:layout_alignBottom="@+id/picasso_text_view"
+                        android:layout_marginBottom="@dimen/marginBottom_picasso"
+                        android:src="@drawable/ic_android_black_24dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.132"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

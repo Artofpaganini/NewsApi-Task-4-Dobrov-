@@ -3,6 +3,10 @@ package by.andersen.intern.dobrov.mynewsapi.activity;
 
 import android.support.annotation.NonNull;
 
+
+import android.content.Intent;
+import android.support.annotation.NonNull;
+
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public static final String API_KEY = "59f165be02ad40e2ba19b7347c289ad0";
     public static final String SORT_BY = "publishedAt";
 
-
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private List<Article> articles = new ArrayList<>();
@@ -50,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private TextView titleToolbar;
     private Spinner spinner;
     private ApiInterface apiInterface;
-
 
     private String selectedCategory;
 
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         spinner = findViewById(R.id.spinner);
         titleToolbar = findViewById(R.id.toolbar_title_main);
 
-
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         setSupportActionBar(toolbar);
         adapterSpinner(spinner);
@@ -77,7 +78,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
+
         recyclerView.setHasFixedSize(true);
+
 
 
         getCategoryFromSpinner();
@@ -107,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     recyclerView.setAdapter(myAdapter);
                     myAdapter.notifyDataSetChanged();
 
+                    initListener();
+
+
                     swipeRefreshLayout.setRefreshing(false);
 
                 }
@@ -120,6 +126,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 Log.d(TAG, "onFailure: GET ERROR MESSAGE ABOUT CONNECTION");
             }
+        });
+
+    }
+
+
+    //инициализация  новости  по клику  на новость в РВ
+    private void initListener() {
+
+        myAdapter.setOnItemClickListener((view, position) -> {
+
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            Article article = articles.get(position);
+            Log.d(TAG, "onItemClick: GET ARTICLE DATA " + article.getSource().getName());
+            intent.putExtra(Article.class.getSimpleName(), article);
+
+            startActivity(intent);
+
+            Log.d(TAG, "onItemClick: FILL all info and send to detail activity");
+
         });
 
     }
