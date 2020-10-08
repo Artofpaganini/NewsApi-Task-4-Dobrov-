@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="toolbar_text_size">32sp</dimen>
+  <dimen name="toolbar_text_size">32sp</dimen>
     <dimen name="toolbar_text_view_title_size">18sp</dimen>
     <dimen name="drawable_padding">10dp</dimen>
     <dimen name="toolbar_text_view_subtitle_size">12sp</dimen>
@@ -38,5 +38,8 @@
     <dimen name="image_margin_bottom_dp">16dp</dimen>
     <dimen name="desc_margin_end">308dp</dimen>
     <dimen name="margin_top_dp">35dp</dimen>
+    <dimen name="absoluteX">176dp</dimen>
+    <dimen name="margin_right">170dp</dimen>
+
 
 </resources>
