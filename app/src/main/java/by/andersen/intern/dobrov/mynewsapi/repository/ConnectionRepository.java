@@ -32,12 +32,7 @@ public class ConnectionRepository implements ConnectionRepositoryInterface {
     public ConnectionRepository(NewsListPresenterInterface newsListPresenterInterface) {
         this.newsListPresenterInterface = newsListPresenterInterface;
     }
-    
-    public ConnectionRepository(NewsListPresenterInterface newsListPresenterInterface, ApiInterface apiInterface, Call<News> call) {
-        this.newsListPresenterInterface = newsListPresenterInterface;
-        this.apiInterface = apiInterface;
-        this.call = call;
-    }
+
 
     @Override
     public void loadData(@NonNull String keyword) {
@@ -45,6 +40,22 @@ public class ConnectionRepository implements ConnectionRepositoryInterface {
         newsListPresenterInterface.swipe();
 
         registerApi();
+
+        makeRequestCall(keyword);
+
+    }
+
+    private void registerApi() {
+        apiFactory = ApiFactory.getInstance();
+        apiInterface = apiFactory.getApiInterface();
+    }
+
+    public void connectionWithNewsListPresenter(List<Article> articles) {
+        newsListPresenterInterface.addDate(articles);
+        newsListPresenterInterface.setData(articles);
+    }
+
+    public void makeRequestCall(@NonNull String keyword) {
 
         String language = RequestParameters.getLanguage();
 
@@ -71,54 +82,20 @@ public class ConnectionRepository implements ConnectionRepositoryInterface {
         });
     }
 
-    private void registerApi() {
-        apiFactory = ApiFactory.getInstance();
-        apiInterface = apiFactory.getApiInterface();
-    }
-
-    public void connectionWithNewsListPresenter(List<Article> articles) {
-        newsListPresenterInterface.addDate(articles);
-        newsListPresenterInterface.setData(articles);
-    }
-
-    public List<Article> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
-    }
-
-    public NewsListPresenterInterface getNewsListPresenterInterface() {
-        return newsListPresenterInterface;
-    }
-
-    public void setNewsListPresenterInterface(NewsListPresenterInterface newsListPresenterInterface) {
-        this.newsListPresenterInterface = newsListPresenterInterface;
-    }
-
-    public ApiFactory getApiFactory() {
-        return apiFactory;
-    }
-
     public void setApiFactory(ApiFactory apiFactory) {
         this.apiFactory = apiFactory;
-    }
-
-    public ApiInterface getApiInterface() {
-        return apiInterface;
     }
 
     public void setApiInterface(ApiInterface apiInterface) {
         this.apiInterface = apiInterface;
     }
 
-    public Call<News> getCall() {
-        return call;
-    }
-
     public void setCall(Call<News> call) {
         this.call = call;
+    }
+
+    public List<Article> getArticles() {
+        return articles;
     }
 }
 
