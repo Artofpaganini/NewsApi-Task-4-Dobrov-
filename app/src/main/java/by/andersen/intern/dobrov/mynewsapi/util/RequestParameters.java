@@ -1,7 +1,11 @@
 package by.andersen.intern.dobrov.mynewsapi.util;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import androidx.annotation.NonNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,11 +13,10 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public final class RequestParameters {
+public class RequestParameters {
 
-    private RequestParameters() {
+    public RequestParameters() {
 
-        throw new IllegalStateException();
     }
 
     @NonNull
@@ -42,6 +45,15 @@ public final class RequestParameters {
         Locale locale = Locale.getDefault();
         String country = String.valueOf(locale.getLanguage());
         return country.toLowerCase();
+    }
+
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
     }
 
 }

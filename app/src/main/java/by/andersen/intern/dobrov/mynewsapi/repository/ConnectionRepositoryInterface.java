@@ -1,8 +1,9 @@
 package by.andersen.intern.dobrov.mynewsapi.repository;
 
+import androidx.annotation.NonNull;
 
 public interface ConnectionRepositoryInterface {
 
-    void loadData(String keyword);
+    void loadNews(@NonNull String keyword);
 
 }

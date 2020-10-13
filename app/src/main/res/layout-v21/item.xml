@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="@dimen/card_view_width"
         android:layout_height="@dimen/card_view_height"
         android:layout_marginLeft="@dimen/margin_side_card"
@@ -15,7 +15,7 @@
         app:cardCornerRadius="@dimen/card_corner_Radius"
         app:cardElevation="@dimen/cardview_default_elevation">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground">
@@ -101,8 +101,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/source"
                 app:layout_constraintVertical_bias="0.812" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

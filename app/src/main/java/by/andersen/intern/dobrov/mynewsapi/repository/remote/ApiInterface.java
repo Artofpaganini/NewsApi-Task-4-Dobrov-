@@ -1,7 +1,7 @@
-package by.andersen.intern.dobrov.mynewsapi.repository.api;
+package by.andersen.intern.dobrov.mynewsapi.repository.remote;
 
 
-import by.andersen.intern.dobrov.mynewsapi.entity.News;
+import by.andersen.intern.dobrov.mynewsapi.model.News;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

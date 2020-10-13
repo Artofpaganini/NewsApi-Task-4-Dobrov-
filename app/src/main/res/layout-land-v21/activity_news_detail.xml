@@ -67,7 +67,7 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/colorBackground"
             android:fitsSystemWindows="true"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -110,7 +110,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/title"
                         android:layout_marginTop="@dimen/margin_top_dp"
-                        android:layout_marginEnd="@dimen/margin_dp"
                         android:text="@{articles.description}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.05"
@@ -141,5 +140,4 @@
         </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
-
 </layout>

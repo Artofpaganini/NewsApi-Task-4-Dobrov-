@@ -1,13 +1,24 @@
-package by.andersen.intern.dobrov.mynewsapi.entity;
+package by.andersen.intern.dobrov.mynewsapi.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import by.andersen.intern.dobrov.mynewsapi.model.converter.Converter;
+
+
+@Entity(tableName = "articles")
+@TypeConverters(value = {Converter.class})
 public class Article implements Parcelable {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     @SerializedName("source")
     @Expose
@@ -40,6 +51,18 @@ public class Article implements Parcelable {
     @SerializedName("content")
     @Expose
     private String content;
+
+    public Article(Source source, String author, String title, String description,
+                   String url, String urlToImage, String publishedAt, String content) {
+        this.source = source;
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.publishedAt = publishedAt;
+        this.content = content;
+    }
 
     @NonNull
     public String getContent() {
@@ -81,8 +104,25 @@ public class Article implements Parcelable {
         return publishedAt;
     }
 
+    @NonNull
+    public int getId() {
+        return id;
+    }
 
-    public void setPublishedAt(@NonNull String publishedAt) {
+    @NonNull
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
     }
 

@@ -4,10 +4,10 @@ package by.andersen.intern.dobrov.mynewsapi.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +24,7 @@ import java.util.List;
 
 import by.andersen.intern.dobrov.mynewsapi.R;
 import by.andersen.intern.dobrov.mynewsapi.activity.NewsDetailActivity;
-import by.andersen.intern.dobrov.mynewsapi.entity.Article;
-
+import by.andersen.intern.dobrov.mynewsapi.model.Article;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private static final String TAG = "MyAdapter";
@@ -37,10 +36,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         return new MyViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
@@ -66,7 +65,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private TextView source;
         private ImageView imageView;
         private Article article;
-
 
         private MyViewHolder(View itemView) {
 

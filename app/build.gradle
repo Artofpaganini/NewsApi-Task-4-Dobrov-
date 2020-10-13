@@ -1,23 +1,26 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-
+    compileSdkVersion 28
 
     defaultConfig {
 
         applicationId "com.haerul.popularnews"
-        minSdkVersion 15
-        targetSdkVersion 27
+        minSdkVersion 28
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    dataBinding {
+        enabled = true
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -26,35 +29,59 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.0'
 
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'org.jetbrains:annotations:15.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    testImplementation "junit:junit:4.13"
-    testImplementation "org.mockito:mockito-all:1.10.19"
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.5.13'
-
-
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
 
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'com.arello-mobile:moxy:1.5.5'
-    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.5'
-    implementation 'com.arello-mobile:moxy-app-compat:1.5.5'
+    // ViewModel and LiveData
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0'
+    // alternately - if using Java8, use the following instead of compiler
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+
+    // optional - ReactiveStreams support for LiveData
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.2.0'
+
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+    // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - RxJava support for Room
+    implementation 'androidx.room:room-rxjava2:2.2.5'
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation 'androidx.room:room-guava:2.2.5'
+
+    // Test helpers
+    testImplementation 'androidx.room:room-testing:2.2.5'
+    implementation 'org.jetbrains:annotations:15.0'
+
+    testImplementation "junit:junit:4.13"
+    testImplementation "org.mockito:mockito-core:3.5.13"
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation "org.hamcrest:hamcrest-all:1.3"
+    testImplementation "org.robolectric:robolectric:4.2.1"
+    testImplementation 'androidx.test:core:1.3.0'
+    testImplementation "androidx.test:runner:1.3.0"
+    testImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 }

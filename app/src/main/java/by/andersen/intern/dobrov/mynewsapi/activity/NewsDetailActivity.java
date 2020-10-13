@@ -1,32 +1,22 @@
 package by.andersen.intern.dobrov.mynewsapi.activity;
 
 import android.content.Intent;
-
-
-import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
-
-import by.andersen.intern.dobrov.mynewsapi.entity.Article;
 import by.andersen.intern.dobrov.mynewsapi.R;
+import by.andersen.intern.dobrov.mynewsapi.databinding.ActivityNewsDetailBinding;
+import by.andersen.intern.dobrov.mynewsapi.model.Article;
 
 public class NewsDetailActivity extends AppCompatActivity {
-    private static final String TAG = "DetailActivity";
 
-    private TextView titleToolbar;
-    private TextView subtitleToolbar;
-    private TextView newsTitle;
-    private TextView description;
-    private Toolbar toolbar;
-    private ImageView glideImageView;
     private Article article;
+    private Toolbar toolbar;
 
+    private ActivityNewsDetailBinding activityNewsDetailBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +26,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        titleToolbar = findViewById(R.id.title_toolbar);
-        subtitleToolbar = findViewById(R.id.subtitle_toolbar);
-
-        newsTitle = findViewById(R.id.title);
-        description = findViewById(R.id.desc);
-
-        glideImageView = findViewById(R.id.glide_image);
+        activityNewsDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_news_detail);
 
         showData();
 
@@ -52,19 +36,8 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         article = intent.getParcelableExtra(Article.class.getSimpleName());
-
-        titleToolbar.setText(article.getSource().getName());
-        subtitleToolbar.setText(article.getUrl());
-        newsTitle.setText(article.getTitle());
-        description.setText(article.getDescription());
-
-        RequestOptions requestOptions = new RequestOptions();
-
-        Glide
-                .with(this)
-                .load(article.getUrlToImage())
-                .apply(requestOptions)
-                .into(glideImageView);
+        activityNewsDetailBinding.setArticles(article);
 
     }
+
 }
