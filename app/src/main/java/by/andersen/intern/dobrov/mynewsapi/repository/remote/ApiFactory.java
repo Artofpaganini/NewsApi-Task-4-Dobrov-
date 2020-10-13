@@ -1,7 +1,6 @@
-package by.andersen.intern.dobrov.mynewsapi.repository.api;
+package by.andersen.intern.dobrov.mynewsapi.repository.remote;
 
 import android.util.Log;
-
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -14,7 +13,6 @@ public class ApiFactory {
     public static Retrofit retrofit;
     private static ApiFactory apiFactory;
 
-
     private ApiFactory() {
 
         retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
@@ -25,9 +23,8 @@ public class ApiFactory {
 
     }
 
-
     public static synchronized ApiFactory getInstance() {
-        
+
         if (apiFactory == null) {
             apiFactory = new ApiFactory();
         }
@@ -37,4 +34,5 @@ public class ApiFactory {
     public ApiInterface getApiInterface() {
         return retrofit.create(ApiInterface.class);
     }
+
 }

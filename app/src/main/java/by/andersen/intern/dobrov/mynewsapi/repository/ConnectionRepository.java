@@ -1,102 +1,64 @@
 package by.andersen.intern.dobrov.mynewsapi.repository;
 
-import android.support.annotation.NonNull;
+import android.app.Application;
+import android.util.Log;
 
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-import by.andersen.intern.dobrov.mynewsapi.entity.Article;
-import by.andersen.intern.dobrov.mynewsapi.entity.News;
-import by.andersen.intern.dobrov.mynewsapi.presenter.NewsListPresenterInterface;
-import by.andersen.intern.dobrov.mynewsapi.repository.api.ApiFactory;
-import by.andersen.intern.dobrov.mynewsapi.repository.api.ApiInterface;
+import by.andersen.intern.dobrov.mynewsapi.activity.viewmodel.NewsListCallback;
+import by.andersen.intern.dobrov.mynewsapi.model.Article;
+import by.andersen.intern.dobrov.mynewsapi.repository.local.LocalData;
+import by.andersen.intern.dobrov.mynewsapi.repository.remote.RemoteData;
 import by.andersen.intern.dobrov.mynewsapi.util.RequestParameters;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class ConnectionRepository implements ConnectionRepositoryInterface {
+public class ConnectionRepository implements ConnectionRepositoryInterface, ConnectionRepositoryCallback {
 
-    private static final String TAG = "ModelConnection";
+    private static final String TAG = "ConnectionRepository";
 
-    public static final String API_KEY = "59f165be02ad40e2ba19b7347c289ad0";
-    public static final String SORT_BY = "publishedAt";
+    private final RemoteData remoteData;
+    private final LocalData localData;
+    private final Application application;
+    private final NewsListCallback newsListCallback;
 
-    private NewsListPresenterInterface newsListPresenterInterface;
+    private boolean noInternet;
 
-    private ApiFactory apiFactory;
-    private ApiInterface apiInterface;
-    private Call<News> call;
-    private List<Article> articles = new ArrayList<>();
+    public ConnectionRepository(Application application, NewsListCallback newsListCallback) {
+        this.application = application;
+        this.remoteData = new RemoteData(this);
+        this.localData = new LocalData(application, this);
+        this.newsListCallback = newsListCallback;
+        Log.d(TAG, "ConnectionRepository: INIT REMOTE,LOCAL and CALLBACK  IN REPOSITORY CONSTR");
 
-    public ConnectionRepository(NewsListPresenterInterface newsListPresenterInterface) {
-        this.newsListPresenterInterface = newsListPresenterInterface;
     }
-
 
     @Override
-    public void loadData(@NonNull String keyword) {
+    public void loadNews(@NonNull String keyword) {
 
-        newsListPresenterInterface.swipe();
+        if (RequestParameters.isOnline(application)) {
+            remoteData.requestNews(keyword);
+            Log.d(TAG, "loadNews: LOAD FROM REMOTE");
 
-        registerApi();
-
-        makeRequestCall(keyword);
-
+        } else {
+            noInternet = true;
+            localData.getNews();
+            newsListCallback.setIsInternet(noInternet);
+            Log.d(TAG, "loadNews: LOAD FROM LOCAL");
+        }
     }
 
-    private void registerApi() {
-        apiFactory = ApiFactory.getInstance();
-        apiInterface = apiFactory.getApiInterface();
+    public NewsListCallback getNewsListCallback() {
+        return newsListCallback;
     }
 
-    public void connectionWithNewsListPresenter(List<Article> articles) {
-        newsListPresenterInterface.addDate(articles);
-        newsListPresenterInterface.setData(articles);
-    }
+    @Override
+    public void setArticles(List<Article> articles) {
+        newsListCallback.setNews(articles);
 
-    public void makeRequestCall(@NonNull String keyword) {
+        localData.insertNewsArticles(articles);
+        localData.deleteAllNewsArticles();
 
-        String language = RequestParameters.getLanguage();
-
-        call = apiInterface.getNewsByCategory(keyword, language, SORT_BY, API_KEY);
-
-        call.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful() && response.body().getArticle() != null) {
-
-                    if (!articles.isEmpty()) {
-                        articles.clear();
-                    }
-                    articles = response.body().getArticle();
-                    connectionWithNewsListPresenter(articles);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                newsListPresenterInterface.showError();
-            }
-        });
-    }
-
-    public void setApiFactory(ApiFactory apiFactory) {
-        this.apiFactory = apiFactory;
-    }
-
-    public void setApiInterface(ApiInterface apiInterface) {
-        this.apiInterface = apiInterface;
-    }
-
-    public void setCall(Call<News> call) {
-        this.call = call;
-    }
-
-    public List<Article> getArticles() {
-        return articles;
+        Log.d(TAG, "setArticles: INSERT DATA TO DB AFTER 1 MIN");
     }
 }
-
-

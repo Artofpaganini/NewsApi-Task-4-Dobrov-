@@ -1,4 +1,4 @@
-package by.andersen.intern.dobrov.mynewsapi.entity;
+package by.andersen.intern.dobrov.mynewsapi.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
