@@ -62,3 +62,5 @@ public class ConnectionRepository implements ConnectionRepositoryInterface, Conn
         Log.d(TAG, "setArticles: INSERT DATA TO DB AFTER 1 MIN");
     }
 }
+
+
