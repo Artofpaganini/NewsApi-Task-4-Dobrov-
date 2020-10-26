@@ -100,6 +100,7 @@ public class LocalDataTest {
             Assert.assertEquals(1, localData.getRowsCounter());
         }).start();
 
+
     }
 
     @Test
