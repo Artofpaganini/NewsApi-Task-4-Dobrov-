@@ -2,7 +2,6 @@ package by.andersen.intern.dobrov.mynewsapi.repository.local;
 
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.room.Room;
 import androidx.test.runner.AndroidJUnit4;
@@ -101,7 +100,6 @@ public class LocalDataTest {
             Assert.assertEquals(1, localData.getRowsCounter());
         }).start();
 
-
     }
 
     @Test
@@ -114,7 +112,5 @@ public class LocalDataTest {
             Assert.assertEquals(0, localData.getRowsCounter());
         }).start();
     }
-
-
 
 }
