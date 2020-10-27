@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="by.andersen.intern.dobrov.mynewsapi.activity.NewsListActivity">
+
+        <activity android:name="by.andersen.intern.dobrov.mynewsapi.presentation.list.NewsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="by.andersen.intern.dobrov.mynewsapi.activity.NewsDetailActivity"
+            android:name="by.andersen.intern.dobrov.mynewsapi.presentation.detail.NewsDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
