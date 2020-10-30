@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import by.andersen.intern.dobrov.mynewsapi.data.repository.ConnectionRepositoryLocalCallback;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
 
 public interface Local {
@@ -14,5 +15,5 @@ public interface Local {
 
     void deleteAllNewsArticles();
 
-    void getCountRows();
+    void setConnectionRepositoryLocalCallback(ConnectionRepositoryLocalCallback connectionRepositoryLocalCallback);
 }

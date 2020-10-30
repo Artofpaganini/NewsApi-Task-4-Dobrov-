@@ -6,4 +6,6 @@ public interface ConnectionRepository {
 
     void loadNews(@NonNull String keyword);
 
+    void setNewsListCallback(NewsListCallback newsListCallback);
+
 }

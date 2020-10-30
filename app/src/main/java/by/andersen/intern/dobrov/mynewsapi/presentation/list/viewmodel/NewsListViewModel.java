@@ -1,21 +1,21 @@
 package by.andersen.intern.dobrov.mynewsapi.presentation.list.viewmodel;
 
-import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import by.andersen.intern.dobrov.mynewsapi.domain.ConnectionRepository;
 import by.andersen.intern.dobrov.mynewsapi.domain.NewsListCallback;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
-import by.andersen.intern.dobrov.mynewsapi.data.repository.ConnectionRepositoryImpl;
-import by.andersen.intern.dobrov.mynewsapi.domain.ConnectionRepository;
 
-public class NewsListViewModel extends AndroidViewModel implements NewsListCallback {
+public class NewsListViewModel extends ViewModel implements NewsListCallback {
     private static final String TAG = "NewsListViewModel";
 
     private final MutableLiveData<List<Article>> requestArticles = new MutableLiveData<>();
@@ -24,11 +24,11 @@ public class NewsListViewModel extends AndroidViewModel implements NewsListCallb
 
     private String intermediateKeyword;
 
-    public NewsListViewModel(@NonNull Application application) {
-        super(application);
-        this.connectionRepository = new ConnectionRepositoryImpl(application, this);
+    @Inject
+    public NewsListViewModel(ConnectionRepository connectionRepository) {
+        this.connectionRepository = connectionRepository;
+        connectionRepository.setNewsListCallback(this);
         Log.d(TAG, "NewsListViewModel: INIT REPOSITORY IN VM ");
-
     }
 
     public LiveData<List<Article>> getRequestArticles(@NonNull String keyword) {
@@ -39,7 +39,7 @@ public class NewsListViewModel extends AndroidViewModel implements NewsListCallb
 
             Log.d(TAG, "getRequestArticlesForView: LOAD NEWS FIRSTLY");
         }
-        Log.d(TAG, "getOldData: LOAD OLD DATA VERSION");
+        connectionRepository.setNewsListCallback(this);
 
         return requestArticles;
     }
@@ -57,7 +57,7 @@ public class NewsListViewModel extends AndroidViewModel implements NewsListCallb
 
     @Override
     public void setIsInternet(boolean internet) {
-        isInternet.setValue(internet);
+        isInternet.postValue(internet);
 
         Log.d(TAG, "setError: GETTING ERROR FROM CALLBACK");
     }

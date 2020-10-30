@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import by.andersen.intern.dobrov.mynewsapi.data.repository.ConnectionRepositoryRemoteCallback;
+import by.andersen.intern.dobrov.mynewsapi.data.util.RequestParameters;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.News;
-import by.andersen.intern.dobrov.mynewsapi.data.repository.ConnectionRepositoryCallback;
-import by.andersen.intern.dobrov.mynewsapi.data.util.RequestParameters;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,17 +22,15 @@ public class RemoteDataImpl implements Remote {
 
     public final String API_KEY = "59f165be02ad40e2ba19b7347c289ad0";
     public final String SORT_BY = "publishedAt";
-    private final ApiInterface apiInterface;
-    private final ConnectionRepositoryCallback connectionRepositoryCallback;
+
+    private ApiInterface apiInterface;
+    private ConnectionRepositoryRemoteCallback connectionRepositoryRemoteCallback;
 
     private List<Article> articles;
 
-    public RemoteDataImpl(ConnectionRepositoryCallback connectionRepositoryCallback) {
-
-        this.connectionRepositoryCallback = connectionRepositoryCallback;
-
-        ApiFactory apiFactory = ApiFactory.getInstance();
-        apiInterface = apiFactory.getApiInterface();
+    @Inject
+    public RemoteDataImpl(ApiInterface apiInterface) {
+        this.apiInterface = apiInterface;
 
         Log.d(TAG, "RemoteData:  START INIT REMOTE CONST + INIT RETROFIT");
 
@@ -52,7 +52,7 @@ public class RemoteDataImpl implements Remote {
                         articles = response.body().getArticle();
                         formatNewsDate(articles);
 
-                        connectionRepositoryCallback.setArticles(articles);
+                        connectionRepositoryRemoteCallback.setArticlesFromRemote(articles);
 
                         Log.d(TAG, "onResponse: GOT NEWS FROM WEB");
 
@@ -74,4 +74,8 @@ public class RemoteDataImpl implements Remote {
         Log.d(TAG, "formatNewsDate: FORMATTED DATE");
     }
 
+    @Override
+    public void setConnectionRepositoryRemoteCallback(ConnectionRepositoryRemoteCallback connectionRepositoryRemoteCallback) {
+        this.connectionRepositoryRemoteCallback = connectionRepositoryRemoteCallback;
+    }
 }

@@ -1,6 +1,5 @@
 package by.andersen.intern.dobrov.mynewsapi.presentation.list;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,26 +22,32 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
+import by.andersen.intern.dobrov.mynewsapi.BaseApp;
 import by.andersen.intern.dobrov.mynewsapi.R;
+import by.andersen.intern.dobrov.mynewsapi.di.ActivityComponent;
+import by.andersen.intern.dobrov.mynewsapi.di.DaggerActivityComponent;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
-import by.andersen.intern.dobrov.mynewsapi.util.GlobalOnlineCheck;
-import by.andersen.intern.dobrov.mynewsapi.presentation.list.viewmodel.NewsListViewModel;
 import by.andersen.intern.dobrov.mynewsapi.presentation.list.adapter.RecyclerViewAdapter;
+import by.andersen.intern.dobrov.mynewsapi.presentation.list.viewmodel.NewsListViewModel;
+import by.andersen.intern.dobrov.mynewsapi.presentation.list.viewmodel.NewsListViewModelFactory;
 
 public class NewsListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "MainActivity";
 
     private static final String NETWORK_ERROR = "Sorry, Network failure, Please Try Again";
 
-    private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
+    private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView titleToolbar;
     private Spinner spinner;
     private String selectedCategory;
-
     private NewsListViewModel viewModel;
 
+    @Inject
+    NewsListViewModelFactory newsListViewModelFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +55,23 @@ public class NewsListActivity extends AppCompatActivity implements SwipeRefreshL
 
         setContentView(R.layout.activity_main);
 
+        ActivityComponent activityComponent = DaggerActivityComponent
+                .builder()
+                .appComponent(BaseApp.getAppComponent())
+                .activity(this)
+                .build();
+        activityComponent.inject(this);
+
+        viewModel = new ViewModelProvider(this, newsListViewModelFactory).get(NewsListViewModel.class);
+
+        Log.d(TAG, "onCreate: VIEWMODEL IS " + viewModel.hashCode() + " " + viewModel.toString());
+
+        recyclerViewAdapter = new RecyclerViewAdapter();
         Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         spinner = findViewById(R.id.spinner);
         titleToolbar = findViewById(R.id.toolbar_title_main);
-
-        recyclerViewAdapter = new RecyclerViewAdapter();
-        viewModel = ViewModelProviders.of(this).get(NewsListViewModel.class);
 
         setSupportActionBar(toolbar);
         adapterSpinner();
@@ -76,16 +90,9 @@ public class NewsListActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     private void initViewModel(@NonNull String keyword) {
+        viewModel.getRequestArticles(keyword).observe(this, NewsListActivity.this::showData);
+        viewModel.getIsInternet().observe(this, aBoolean -> NewsListActivity.this.showError());
 
-        if (GlobalOnlineCheck.isOnline(this)) {
-            viewModel.getRequestArticles(keyword).observe(this, NewsListActivity.this::showData);
-
-            Log.d(TAG, "initViewModel: GET  DATA FROM VM ");
-        } else {
-            viewModel.getRequestArticles(keyword).observe(this, NewsListActivity.this::showData);
-            viewModel.getIsInternet().observe(this, aBoolean -> NewsListActivity.this.showError());
-
-        }
     }
 
     //вывод ошибки

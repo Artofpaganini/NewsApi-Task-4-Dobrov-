@@ -1,10 +1,10 @@
 package by.andersen.intern.dobrov.mynewsapi.data.local;
 
+import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.annotation.NonNull;
 
 import java.util.List;
 
@@ -21,8 +21,5 @@ public interface NewsDAO {
 
     @Query("DELETE FROM articles")
     void deleteAllNews();
-
-    @Query("SELECT COUNT(*) FROM articles")
-    int getCountRows();
 
 }
