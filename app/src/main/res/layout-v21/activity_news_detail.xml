@@ -7,7 +7,7 @@
 
         <variable
             name="articles"
-            type="by.andersen.intern.dobrov.mynewsapi.model.Article" />
+            type="by.andersen.intern.dobrov.mynewsapi.domain.model.Article" />
 
     </data>
 
@@ -17,7 +17,7 @@
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
-        tools:context=".activity.NewsDetailActivity">
+        tools:context=".presentation.detail.NewsDetailActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
