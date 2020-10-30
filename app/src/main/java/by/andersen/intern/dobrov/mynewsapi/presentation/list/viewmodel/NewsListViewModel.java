@@ -1,7 +1,5 @@
 package by.andersen.intern.dobrov.mynewsapi.presentation.list.viewmodel;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,55 +9,48 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import by.andersen.intern.dobrov.mynewsapi.domain.ConnectionRepository;
-import by.andersen.intern.dobrov.mynewsapi.domain.NewsListCallback;
+import by.andersen.intern.dobrov.mynewsapi.domain.ArticleMapperToViewModel;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 
-public class NewsListViewModel extends ViewModel implements NewsListCallback {
+public class NewsListViewModel extends ViewModel {
     private static final String TAG = "NewsListViewModel";
 
+    private final CompositeDisposable disposables = new CompositeDisposable();
     private final MutableLiveData<List<Article>> requestArticles = new MutableLiveData<>();
-    private final ConnectionRepository connectionRepository;
-    public SingleLiveEventForInternet<Boolean> isInternet = new SingleLiveEventForInternet<>();
-
+    private final ArticleMapperToViewModel articleMapperToViewModel;
+    private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     private String intermediateKeyword;
 
     @Inject
-    public NewsListViewModel(ConnectionRepository connectionRepository) {
-        this.connectionRepository = connectionRepository;
-        connectionRepository.setNewsListCallback(this);
-        Log.d(TAG, "NewsListViewModel: INIT REPOSITORY IN VM ");
+    public NewsListViewModel(ArticleMapperToViewModel articleMapperToViewModel) {
+        this.articleMapperToViewModel = articleMapperToViewModel;
+
     }
 
     public LiveData<List<Article>> getRequestArticles(@NonNull String keyword) {
 
         if (requestArticles == null || !(keyword.equals(intermediateKeyword))) {
             intermediateKeyword = keyword;
-            connectionRepository.loadNews(keyword);
-
-            Log.d(TAG, "getRequestArticlesForView: LOAD NEWS FIRSTLY");
+            getNews(keyword);
         }
-        connectionRepository.setNewsListCallback(this);
 
         return requestArticles;
     }
 
-    public SingleLiveEventForInternet<Boolean> getIsInternet() {
-        return isInternet;
+    public void getNews(@NonNull String keyword) {
+        disposables.add(articleMapperToViewModel.getFilteredNewsArticles(keyword)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(value -> error.setValue(value))
+                .subscribe(requestArticles::setValue));
+
     }
 
     @Override
-    public void setNews(List<Article> newArticles) {
-        requestArticles.postValue(newArticles);
-
-        Log.d(TAG, "setNews: GETTING CALLBACK FROM REPOSITORY ");
-    }
-
-    @Override
-    public void setIsInternet(boolean internet) {
-        isInternet.postValue(internet);
-
-        Log.d(TAG, "setError: GETTING ERROR FROM CALLBACK");
+    protected void onCleared() {
+        super.onCleared();
+        disposables.clear();
     }
 
 }

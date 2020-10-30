@@ -7,7 +7,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,15 +35,13 @@ import by.andersen.intern.dobrov.mynewsapi.presentation.list.viewmodel.NewsListV
 public class NewsListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "MainActivity";
 
-    private static final String NETWORK_ERROR = "Sorry, Network failure, Please Try Again";
-
+    private NewsListViewModel viewModel;
     private RecyclerViewAdapter recyclerViewAdapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView titleToolbar;
     private Spinner spinner;
     private String selectedCategory;
-    private NewsListViewModel viewModel;
 
     @Inject
     NewsListViewModelFactory newsListViewModelFactory;
@@ -90,16 +87,8 @@ public class NewsListActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     private void initViewModel(@NonNull String keyword) {
-        viewModel.getRequestArticles(keyword).observe(this, NewsListActivity.this::showData);
-        viewModel.getIsInternet().observe(this, aBoolean -> NewsListActivity.this.showError());
 
-    }
-
-    //вывод ошибки
-    private void showError() {
-        Log.d(TAG, "showError: SENT ERROR MESSAGE ABOUT CONNECTION  NETWORK");
-        Toast.makeText(NewsListActivity.this, NETWORK_ERROR, Toast.LENGTH_SHORT).show();
-
+        viewModel.getRequestArticles(keyword).observe(this, this::showData);
     }
 
     //загрузка данных

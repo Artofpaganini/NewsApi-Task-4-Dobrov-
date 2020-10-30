@@ -66,6 +66,8 @@ public class Article implements Parcelable {
         this.content = content;
     }
 
+
+
     @NonNull
     public String getContent() {
         return content;

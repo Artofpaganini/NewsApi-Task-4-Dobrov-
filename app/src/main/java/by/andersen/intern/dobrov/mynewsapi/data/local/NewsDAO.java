@@ -9,17 +9,19 @@ import androidx.room.Query;
 import java.util.List;
 
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
 
 @Dao
 public interface NewsDAO {
 
     @Query("SELECT * FROM articles")
-    List<Article> getAllNewsArticles();
+    Observable<List<Article>> getAllNewsArticles();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAllNewsArticles(@NonNull List<Article> articles);
+    Completable insertAllNewsArticles(@NonNull List<Article> articles);
 
     @Query("DELETE FROM articles")
-    void deleteAllNews();
+    Completable deleteAllNews();
 
 }

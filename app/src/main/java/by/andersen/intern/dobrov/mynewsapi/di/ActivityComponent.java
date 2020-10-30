@@ -7,7 +7,7 @@ import by.andersen.intern.dobrov.mynewsapi.di.modules.AdapterModule;
 import by.andersen.intern.dobrov.mynewsapi.di.modules.LocalModule;
 import by.andersen.intern.dobrov.mynewsapi.di.modules.NewsListViewModelFactoryModule;
 import by.andersen.intern.dobrov.mynewsapi.di.modules.RemoteModule;
-import by.andersen.intern.dobrov.mynewsapi.di.modules.DataInterfaceModule;
+import by.andersen.intern.dobrov.mynewsapi.di.modules.DefaultInterfaceModule;
 import by.andersen.intern.dobrov.mynewsapi.di.scope.MyScope;
 import by.andersen.intern.dobrov.mynewsapi.presentation.list.NewsListActivity;
 import dagger.BindsInstance;
@@ -19,7 +19,7 @@ import dagger.Component;
         dependencies = AppComponent.class,
         modules = {
                 NewsListViewModelFactoryModule.class,
-                DataInterfaceModule.class,
+                DefaultInterfaceModule.class,
                 RemoteModule.class,
                 LocalModule.class,
                 AdapterModule.class

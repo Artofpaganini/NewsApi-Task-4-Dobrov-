@@ -4,16 +4,17 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import by.andersen.intern.dobrov.mynewsapi.data.repository.ConnectionRepositoryLocalCallback;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 public interface Local {
 
-    void getNews();
+    Observable<List<Article>> getNews();
 
-    void insertNewsArticles(@NonNull List<Article> articles);
+    Completable insertNewsArticles(@NonNull List<Article> articles);
 
-    void deleteAllNewsArticles();
+    Completable deleteAllNewsArticles();
 
-    void setConnectionRepositoryLocalCallback(ConnectionRepositoryLocalCallback connectionRepositoryLocalCallback);
 }
