@@ -31,7 +31,6 @@ public class SingleLiveEventForInternet<T> extends MutableLiveData<T> {
         });
     }
 
-
     @MainThread
     public void setValue(@Nullable T t) {
         pending.set(true);

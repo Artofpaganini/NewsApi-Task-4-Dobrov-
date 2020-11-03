@@ -11,10 +11,6 @@ import java.util.Locale;
 
 public class RequestParameters {
 
-    public RequestParameters() {
-
-    }
-
     @NonNull
     public static String dateFormat(@NonNull String oldStringDate) {
         String newDate;
@@ -37,6 +33,7 @@ public class RequestParameters {
         return country.toLowerCase();
     }
 
+    @NonNull
     public static String getLanguage() {
         Locale locale = Locale.getDefault();
         String country = String.valueOf(locale.getLanguage());

@@ -4,7 +4,7 @@ import java.util.List;
 
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
 
-public interface ConnectionRepositoryCallback {
+public interface ConnectionRepositoryLocalCallback {
 
-    void setArticles(List<Article> articles);
+    void setArticlesFromLocal(List<Article> articles);
 }

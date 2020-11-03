@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import by.andersen.intern.dobrov.mynewsapi.R;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
 import by.andersen.intern.dobrov.mynewsapi.presentation.detail.NewsDetailActivity;
@@ -32,6 +34,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<Article> articles;
 
     public static final String TRANSITION_IMAGE = "transitionImage";
+
+    @Inject
+    public RecyclerViewAdapter() {
+    }
 
     @NonNull
     @Override
