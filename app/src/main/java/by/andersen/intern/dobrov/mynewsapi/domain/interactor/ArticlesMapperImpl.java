@@ -47,7 +47,7 @@ public class ArticlesMapperImpl implements ArticleMapperToViewModel {
     public void modifyArticle(@NonNull Article article) {
 
         article.setPublishedAt(RequestParameters.dateFormat(article.getPublishedAt()));
-        article.setTitle(article.getTitle().concat(" FILTRED"));
+        article.setTitle(article.getTitle().concat(" FILTERED"));
 
     }
 }
