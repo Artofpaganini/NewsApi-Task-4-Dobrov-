@@ -6,18 +6,23 @@ import by.andersen.intern.dobrov.mynewsapi.data.remote.Remote;
 import by.andersen.intern.dobrov.mynewsapi.data.remote.RemoteDataImpl;
 import by.andersen.intern.dobrov.mynewsapi.data.repository.ConnectionRepositoryImpl;
 import by.andersen.intern.dobrov.mynewsapi.di.scope.MyScope;
-import by.andersen.intern.dobrov.mynewsapi.domain.ConnectionRepository;
-import by.andersen.intern.dobrov.mynewsapi.util.GlobalOnlineCheck;
-import by.andersen.intern.dobrov.mynewsapi.util.GlobalOnlineCheckImpl;
+import by.andersen.intern.dobrov.mynewsapi.domain.ArticleMapperToViewModel;
+import by.andersen.intern.dobrov.mynewsapi.domain.ConnectionRepositoryToArticlesMapper;
+import by.andersen.intern.dobrov.mynewsapi.domain.interactor.ArticlesMapperImpl;
+
 import dagger.Binds;
 import dagger.Module;
 
 @Module
-public interface DataInterfaceModule {
+public interface DefaultInterfaceModule {
 
     @MyScope
     @Binds
-    ConnectionRepository provideRepository(ConnectionRepositoryImpl connectionRepository);
+    ArticleMapperToViewModel provideArticleMapper(ArticlesMapperImpl articlesMapperImpl);
+
+    @MyScope
+    @Binds
+    ConnectionRepositoryToArticlesMapper provideRepository(ConnectionRepositoryImpl connectionRepository);
 
     @MyScope
     @Binds
@@ -26,8 +31,4 @@ public interface DataInterfaceModule {
     @MyScope
     @Binds
     Local provideLocal(LocalDataImpl local);
-
-    @MyScope
-    @Binds
-    GlobalOnlineCheck provideGlobalOnlineCheck(GlobalOnlineCheckImpl globalOnlineCheck);
 }

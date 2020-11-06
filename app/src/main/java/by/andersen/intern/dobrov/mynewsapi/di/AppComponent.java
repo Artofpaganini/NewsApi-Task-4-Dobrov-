@@ -7,11 +7,8 @@ import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
 
-
 @Singleton
-@Component(
-
-)
+@Component
 public interface AppComponent {
 
     @Component.Builder

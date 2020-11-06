@@ -10,65 +10,41 @@ import javax.inject.Inject;
 
 import by.andersen.intern.dobrov.mynewsapi.data.local.Local;
 import by.andersen.intern.dobrov.mynewsapi.data.remote.Remote;
-import by.andersen.intern.dobrov.mynewsapi.domain.ConnectionRepository;
-import by.andersen.intern.dobrov.mynewsapi.domain.NewsListCallback;
+import by.andersen.intern.dobrov.mynewsapi.domain.ConnectionRepositoryToArticlesMapper;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
-import by.andersen.intern.dobrov.mynewsapi.util.GlobalOnlineCheck;
 
-public class ConnectionRepositoryImpl implements ConnectionRepository, ConnectionRepositoryRemoteCallback, ConnectionRepositoryLocalCallback {
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+
+public class ConnectionRepositoryImpl implements ConnectionRepositoryToArticlesMapper {
 
     private static final String TAG = "ConnectionRepository";
 
-    private boolean noInternet;
     private final Remote remote;
     private final Local local;
-    private final GlobalOnlineCheck globalOnlineCheck;
-    private NewsListCallback newsListCallback;
 
     @Inject
-    public ConnectionRepositoryImpl(GlobalOnlineCheck globalOnlineCheck, Remote remote, Local local) {
-        this.globalOnlineCheck = globalOnlineCheck;
+    public ConnectionRepositoryImpl( Remote remote, Local local) {
         this.remote = remote;
         this.local = local;
-
-        remote.setConnectionRepositoryRemoteCallback(this::setArticlesFromRemote);
-        local.setConnectionRepositoryLocalCallback(this::setArticlesFromLocal);
 
         Log.d(TAG, "ConnectionRepository: INIT REMOTE,LOCAL and CALLBACK  IN REPOSITORY CONSTR");
 
     }
 
     @Override
-    public void loadNews(@NonNull String keyword) {
+    public Observable<List<Article>> loadNews(@NonNull String keyword) {
 
-        if (globalOnlineCheck.isOnline()) {
-            remote.requestNews(keyword);
-            Log.d(TAG, "loadNews: LOAD FROM REMOTE");
-
-        } else {
-            noInternet = true;
-            local.getNews();
-            newsListCallback.setIsInternet(noInternet);
-            Log.d(TAG, "loadNews: LOAD FROM LOCAL");
-        }
+        return remote.requestNews(keyword)
+                .flatMap((Function<List<Article>, ObservableSource<List<Article>>>) articles -> local.deleteAllNewsArticles()
+                        .andThen(local.insertNewsArticles(articles))
+                        .andThen(Observable.just(articles)))
+                .onErrorResumeNext(throwable -> {
+                    return local.getNews()
+                            .flatMap((Function<List<Article>, ObservableSource<List<Article>>>) Observable::just);
+                });
     }
 
-    @Override
-    public void setNewsListCallback(NewsListCallback newsListCallback) {
-        this.newsListCallback = newsListCallback;
-    }
-
-    @Override
-    public void setArticlesFromRemote(List<Article> articles) {
-        newsListCallback.setNews(articles);
-        local.insertNewsArticles(articles);
-        local.deleteAllNewsArticles();
-        Log.d(TAG, "setArticles:  GET DATA FROM REMOTE AND INSERT DATA TO DB AFTER 1 MIN");
-    }
-
-    @Override
-    public void setArticlesFromLocal(List<Article> articles) {
-        newsListCallback.setNews(articles);
-        Log.d(TAG, "setArticlesFromLocal: GET DATA FROM DB");
-    }
 }
+

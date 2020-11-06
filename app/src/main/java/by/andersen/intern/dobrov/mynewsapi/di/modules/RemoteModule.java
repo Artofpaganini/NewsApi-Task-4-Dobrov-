@@ -1,5 +1,7 @@
 package by.andersen.intern.dobrov.mynewsapi.di.modules;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import javax.inject.Singleton;
 
 import by.andersen.intern.dobrov.mynewsapi.data.remote.ApiInterface;
@@ -20,6 +22,7 @@ public class RemoteModule {
     static Retrofit provideRetrofit() {
         return new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
