@@ -13,7 +13,6 @@ import by.andersen.intern.dobrov.mynewsapi.data.util.RequestParameters;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.Article;
 import by.andersen.intern.dobrov.mynewsapi.domain.model.News;
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 
 public class RemoteDataImpl implements Remote {
 
@@ -22,7 +21,7 @@ public class RemoteDataImpl implements Remote {
     public final String API_KEY = "82a1972ff90249ba971cf9b11c215c7a";
     public final String SORT_BY = "publishedAt";
 
-    private ApiInterface apiInterface;
+    private final ApiInterface apiInterface;
 
     @Inject
     public RemoteDataImpl(ApiInterface apiInterface) {
@@ -44,4 +43,5 @@ public class RemoteDataImpl implements Remote {
                 .map(News::getArticle);
 
     }
+
 }
